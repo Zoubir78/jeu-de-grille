@@ -1,13 +1,10 @@
 {
-  "name": "jeu de Grille",
+  "name": "jeu-de-grille",
   "version": "1.0.0",
   "description": "Un jeu multi-joueurs",
   "main": "app.js",
   "dependencies": {
     "express": "^4.17.1",
-    "mongo": "^0.1.0",
-    "mongodb": "^3.2.7",
-    "nodemon": "^1.19.1",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {},
