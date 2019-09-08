@@ -1,0 +1,17 @@
+{
+  "name": "jeu de Grille",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongod": "^2.0.0",
+    "mongodb": "^3.3.2",
+    "socket.io": "^1.7.4"
+  },
+  "engines": {
+    "node": "4.1.x"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}

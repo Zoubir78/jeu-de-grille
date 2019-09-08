@@ -1,0 +1,151 @@
+<title>Jeu de Grille</title>
+
+<link rel="stylesheet" type="text/css" href="client/style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
+
+<body>
+	<canvas id="canvas"></canvas>
+
+	<div id="ui" class="layer">
+		<div id="leaderboard" class="outer">
+			<div class="inner"></div>
+		</div>
+		<div id="info" class="outer">
+			<div class="inner">
+				<div class="blob">
+					<span class="text-left"></span>
+					<span class="text-center"></span>
+					<span class="text-right"></span>
+				</div>
+			</div>
+		</div>
+		<div id="go-settings" class="outer"><div class="fa fa-cog"></div></div>
+		<div id="settings" class="outer">
+			<div class="inner">
+				<div class="blob white">Infos sur le jeu:</div>
+				<div id="code" class="blob light"></div>
+				<div id="settings-info" class="blob"></div>
+				<div id="settings-continue" class="blob hover green"><span class="fa fa-square"></span> Continuer </div>
+				<div id="settings-leave" class="blob hover red"><span class="fa fa-reply"></span> Quitter le jeu </div>
+			</div>
+		</div>
+		<div id="lose" class="outer">
+			<div class="inner">
+				<div class="blob white">Tu as perdu!</div>
+				<div class="blob white">Afficher les statistiques ici ...</div>
+				<div id="lose-play" class="blob hover green"><span class="fa fa-share-square"></span> Rejouer</div>
+				<div id="lose-leave" class="blob hover red"><span class="fa fa-reply"></span> Quitter le jeu</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="menu" class="layer">
+		<div id="title" class="section">
+			<div class="subsection">
+				<div class="outer">
+					<div class="inner">
+						<h1><span id="logo" class="fa fa-th"></span>Jeu de Grille</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="start" class="section">
+			<div id="player" class="subsection">
+				<div class="outer">
+					<div class="inner">
+						<div class="blob white">pseudonyme:</div>
+						<input type="text" id="name" class="blob light">
+						<div id="play" class="blob hover green"><span class="fa fa-square"></span> Play</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="other-sub" class="subsection">
+				<div id="other" class="outer">
+					<div class="inner">
+						<div id="go-rules" class="blob hover"><span class="fa fa-book"></span> Comment jouer</div>
+						<div id="go-create" class="blob hover"><span class="fa fa-plus-square"></span> Créer un jeu</div>
+						<div id="go-join" class="blob hover"><span class="fa fa-share-square"></span> Rejoins une partie</div>
+					</div>
+				</div>
+
+				<div id="join" class="outer">
+					<div class="inner">
+						<div class="blob white">Entrez le code du jeu:</div>
+						<input type="text" id="put-code" class="blob light">
+						<div id="join-join" class="blob hover green"><span class="fa fa-share-square"></span> Joindre</div>
+						<div id="join-back" class="blob hover red"><span class="fa fa-reply"></span> Retour</div>
+					</div>
+				</div>
+
+				<div id="create" class="outer">
+					<div class="inner">
+						<div class="blob white">Choisissez la taille de la grille:</div>
+						<div class="split">
+							<div id="create-20" class="size blob light">20</div>
+							<div id="create-50" class="size blob">50</div>
+							<div id="create-100" class="size blob">100</div>
+							<div id="create-200" class="size blob">200</div>
+						</div>
+						<div class="blob white">Choisissez l'intimité du jeu:</div>
+						<div class="split">
+							<div id="create-public" class="pub blob light">Publique</div>
+							<div id="create-private" class="pub blob">Privé</div>
+						</div>
+						<div class="blob white">Copier le code du jeu:</div>
+						<div id="get-code" class="blob light"></div>
+						<div id="create-create" class="blob hover green"><span class="fa fa-plus-square"></span> Créer</div>
+						<div id="create-back" class="blob hover red"><span class="fa fa-reply"></span> Retour</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="rules" class="subsection">
+				<div class="outer">
+					<div class="inner">
+						<div id="rules-info">
+							<div class="blob">Goal: Contrôle le plus de pièces sur la grille!</div>
+							<div id="rules-pc" class="blob light">Cliquez sur l'un de vos morceaux pour le sélectionner. Utilisez les touches HAUT, BAS, GAUCHE ET DROITE pour le déplacer et pousser les pièces à sa manière.</div>
+							<div id="rules-touch" class="blob light">Appuyez sur l'une de vos pièces pour la sélectionner. Faites glisser pour le déplacer et poussez les pièces à sa manière.</div>
+							<img id="before-move" class="big" src="client/img/beforeMove.png">
+							<span class="fa fa-arrow-right"></span>
+							<img id="after-move" class="big" src="client/img/afterMove.png">
+
+							<div class="blob light">Déplacez les pièces ennemies en les poussant avec plus de vos propres pièces (par exemple, 3 verts poussent 2 rouges).</div>
+							<img id="before-push" class="big" src="client/img/beforePush.png">
+							<span class="fa fa-arrow-right"></span>
+							<img id="after-push" class="big" src="client/img/afterPush.png">
+
+							<div class="blob light">Capturez un groupe de pièces ennemies en entourant plus de la moitié de vos propres pièces (par exemple, le vert entoure 4/8 des bords du rouge).</div>
+							<img id="before-capture" class="big" src="client/img/beforeCapture.png">
+							<span class="fa fa-arrow-right"></span>
+							<img id="after-capture" class="big" src="client/img/afterCapture.png">
+
+							<div class="blob light">Les pièces non liées à un groupe meurent mais peuvent être reprises.</div>
+							<img id="before-loss" class="small" src="client/img/beforeLoss.png">
+							<span class="fa fa-arrow-right"></span>
+							<img id="after-loss" class="small" src="client/img/afterLoss.png">
+							<div class="blob light">Les pièces mortes apparaissent également de manière aléatoire sur la grille.</div>
+						</div>
+						<div id="rules-back" class="blob hover red"><span class="fa fa-reply"></span> Retour</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</body>
+
+<script src="/client/lib/socket.js"></script>
+<script src="/client/lib/jquery.js"></script>
+<script src="/client/lib/randomColor.js"></script>
+<script src="/client/lib/chance.js"></script>
+
+<script src="/client/common.js"></script>
+<script src="/client/classes.js"></script>
+<script src="/client/helper.js"></script>
+<script src="/client/drawer.js"></script>
+<script src="/client/client.js"></script>
