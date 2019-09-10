@@ -1,7 +1,3 @@
-//  Chance.js 1.0.3
-//  http://chancejs.com
-//  (c) 2013 Victor Quinn
-//  Chance may be freely distributed or modified under the MIT license.
 
 (function () {
 
