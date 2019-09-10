@@ -1,13 +1,11 @@
-/*global $, classes, navigator*/
 
 this.helper = function($, classes) {
   'use strict';
 
   ///////////////////////////////////////////////////////////////////////
-  //Generating dynamic HTML components
+  //Générer des composants HTML dynamiques
   ///////////////////////////////////////////////////////////////////////
   
-  //update html of leaderboard and info bar after player update
   function updateUi(game,view,selfId) {
     var leaderboard = game.getLeaderboard();
     var rank = 0;
@@ -15,7 +13,6 @@ this.helper = function($, classes) {
       if(leaderboard[i].id == selfId) { rank = leaderboard[i].rank; }
     }
     
-  
     $("#info .blob").css("background", game.playerList[selfId].color);
     $("#info .text-left").text(game.playerList[selfId].name);
     $("#info .text-center").text("Score: "+game.playerList[selfId].score);
@@ -31,7 +28,7 @@ this.helper = function($, classes) {
       }).appendTo("#leaderboard .inner");
     }
   
-    //update game info in settings
+    //mettre à jour les informations de jeu dans les paramètres
     $("#code").text((""+game.id).substring(2));
     var value = "#"+(""+game.id).slice(2,6);
     $("#settings-info").html('<span class="text-id">'+value+'</span><span class="text-center">'+game.l+'</span><span class="text-right">'+game.getPlayerCount()+'/'+game.playerLimit+'</span>');
@@ -39,7 +36,7 @@ this.helper = function($, classes) {
   
   
   ///////////////////////////////////////////////////////////////////////
-  //Wierd methods of detecting mobile and tablet users
+  //Des méthodes étranges pour détecter les utilisateurs de mobiles et de tablettes
   ///////////////////////////////////////////////////////////////////////
   
   function mobileTabletCheck() {

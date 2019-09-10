@@ -1,9 +1,7 @@
 (function(factory) {
     if (typeof exports === 'object') {
-      // Node requirements
       module.exports = factory();
     } else {
-      // Browser global
       this.common = factory();
     }
 })(function() {
@@ -20,7 +18,6 @@
     return arr;
   }
   
-  //attempt to set selected piece to certain index
   function selectPiece(game,selfId,i,j) {
     if(game.board[i][j].id == selfId && i>=0 && i<game.l && j>=0 && j<game.l) {
       return {i:i,j:j};
@@ -29,15 +26,15 @@
   }
   
   
-  ///////////////////////////////////////////////////////////////////////
-  //Logic for recursively finding groups when making moves
-  ///////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////
+  //La logique pour rechercher récursivement des groupes lors de déplacements
+  ///////////////////////////////////////////////////////////////////////////
   
   function findGroups(game, region) {
   	var groups = createArray(region.maxI-region.minI+1,region.maxJ-region.minJ+1);
   	var groupNum = 0;
   
-  	//get array of grouped pieces
+  	//obtenir un tableau de pièces groupées
   	for(var n = 0; n < groups.length; n++) {
   		for(var m = 0; m < groups[0].length; m++) {
   			if(game.board[n+region.minI][m+region.minJ].id && !groups[n][m]) {
@@ -49,11 +46,10 @@
   	return groups;
   }
   
-  //helper function to loop through when calculating groups
   function groupLoop(game,region,groups,n,m,groupNum) {
   	groups[n][m] = groupNum;
   
-  	//careful of board edges
+    //attention aux bords de la planche
   	var maxA = n == groups.length-1 ? 1 : 2;
   	var minA = n == 0 ? 0 : -1;
   	var maxB = m == groups[0].length-1 ? 1 : 2;
@@ -73,17 +69,15 @@
   	return groups;
   }
   
-  //helper function to find minimal region for finding groups in
   function regionLoop(game, data, i, j) {
     data.checked[i][j] = true;
-  
-    //update mins and maxes
+
     if(i < data.region.minI) data.region.minI = i;
     if(i > data.region.maxI) data.region.maxI = i;
     if(j < data.region.minJ) data.region.minJ = j;
     if(j > data.region.maxJ) data.region.maxJ = j;
   
-    //careful of board edges
+    //attention aux bords de la planche
   	var maxA = i == game.l-1 ? 1 : 2;
   	var minA = i == 0 ? 0 : -1;
   	var maxB = j == game.l-1 ? 1 : 2;

@@ -1,13 +1,11 @@
-/*global helper*/
 
 this.drawer = function(helper) {
   'use strict';
 
   var mobile = helper.mobileCheck();
   
-  //draw board lines, pieces and selection on canvas
   function drawBoard(ctx,game,view,selected) {
-    //draw board border
+
     var borderWidth = 0.5;
     for(var n = 8; n >= 0; n--) {
       var value = 256 - n*32;
@@ -18,7 +16,6 @@ this.drawer = function(helper) {
     ctx.lineWidth = view.size*0.05;
     ctx.strokeStyle = "rgb(224, 224, 224)";
   
-    //more efficient board style
     for(var i = view.minI-1; i <= view.maxI+2; i++) {
       ctx.beginPath();
       if(i>=0 && i<game.l) {
@@ -38,7 +35,7 @@ this.drawer = function(helper) {
       }
     }
   
-    //draw pieces
+    //dessiner les pièces
     for(var i = view.minI-1; i <= view.maxI+2; i++) {
       for(var j = view.minJ-1; j <= view.maxJ+2; j++) {
         if(i>=0 && i<game.l && j>=0 && j<game.l) {
@@ -54,7 +51,7 @@ this.drawer = function(helper) {
       }
     }
   
-    //draw selected piece indicator
+    //dessiner l'indicateur de pièce sélectionnée
     if(selected.i != null) {
       ctx.fillStyle = "rgba(255,255,255,0.3)";
   
@@ -66,7 +63,7 @@ this.drawer = function(helper) {
     }
   }
   
-  //get info on own pieces for size and view
+  //obtenir des informations sur la taille et la vue pour ses propres pièces
   function getView(game, selfId, view, smooth) {
     var minI, maxI, minJ, maxJ;
     var first = true;
@@ -131,7 +128,7 @@ this.drawer = function(helper) {
     return view;
   }
   
-  //draw rounded rectangle
+  //dessiner un rectangle arrondi
   function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
@@ -149,12 +146,10 @@ this.drawer = function(helper) {
     if(stroke) { ctx.stroke(); }
   }
   
-  //convert rgb to rgba
+  //convertir rgb en rgba
   function makeAlpha(rgb,alpha) {
     return rgb.replace(')', ', ' + alpha + ')').replace('rgb', 'rgba');
   }
-  
-  
   
   return {
     drawBoard: drawBoard,

@@ -1,4 +1,3 @@
-/*global $, io, classes, common, drawer, helper, randomColor, chance*/
 
 (function($, io, classes, common, drawer, helper, randomColor, chance) {
   
@@ -15,23 +14,21 @@
   
   
   ///////////////////////////////////////////////////////////////////////
-  //Main client update loop
+  //Boucle de mise à jour du client principal
   ///////////////////////////////////////////////////////////////////////
   
-  //client side update loop for drawing
   setInterval(function(){
-    //canvas matched to window size
+    
     view.width = window.innerWidth;
     view.height = window.innerHeight;
   
     ctx.canvas.width  = view.width;
     ctx.canvas.height = view.height;
   
-    if(game) { //view board even when score goes to zero
+    if(game) { 
       game.boardSlide(view);
       view = drawer.getView(game,selfId,view,true);
   
-      //bring up lose screen on zero score
       if(!game.playerList[selfId].score) {
         $("#leaderboard").hide();
         $("#info").hide();
@@ -47,7 +44,7 @@
   
   
   ///////////////////////////////////////////////////////////////////////
-  //Socket listeners and emitters
+  //Socket listeners
   ///////////////////////////////////////////////////////////////////////
   
   function joinGame(createData,joinId) {
@@ -69,7 +66,7 @@
   }
   
   function leaveGame() {
-    //emit leave game and get some callback to end client game
+
     socket.emit('leave');
     game = null;
   
@@ -92,7 +89,7 @@
   });
   
   socket.on('update',function(data) {
-    //unpack piece updates
+    
     if(data.pieces.length) {
       var ownPieces = false;
       for(var n = 0; n < data.pieces.length; n++) {
@@ -101,7 +98,7 @@
         game.board[i][j].id = data.pieces[n].id;
         if(data.pieces[n].prev) {
           if(data.pieces[n].prev.count != null) {
-            if(!ownPieces && data.pieces[n].id == selfId) { ownPieces = true; } //only need to move selected if your pieces move
+            if(!ownPieces && data.pieces[n].id == selfId) { ownPieces = true; }
             game.board[i][j].prev.count = data.pieces[n].prev.count;
           }
           if(data.pieces[n].prev.dx != null) { game.board[i][j].prev.dx = data.pieces[n].prev.dx; }
@@ -109,7 +106,6 @@
         }
       }
   
-      //decide where the selected piece should be moved
       if(ownPieces) {
         var max = {i:null,j:null};
         for(var i = 0; i < game.l; i++) {
@@ -125,24 +121,22 @@
       }
     }
   
-    //unpack player updates
     if(data.players.length) {
       for(var i = 0 ; i < data.players.length; i++){
         game.playerList[data.players[i].id].score = data.players[i].score;
       }
     }
-    if(data.players.length) { helper.updateUi(game,view,selfId); } //leadboard only changes on player updates
+    if(data.players.length) { helper.updateUi(game,view,selfId); }
   });
   
   
   socket.on('remove',function(data) {
-    //unpack removed players
+
     for(var i = 0; i < data.players.length; i++) {
       delete game.playerList[data.players[i]];
     }
     if(data.players.length) { helper.updateUi(game,view,selfId); }
-  
-    //unpack changes to removed players' pieces
+
     for(var n = 0; n < data.pieces.length; n++) {
       game.board[data.pieces[n].i][data.pieces[n].j].id = data.pieces[n].id;
     }
@@ -150,26 +144,24 @@
   
   
   ///////////////////////////////////////////////////////////////////////
-  //User input event handlers
+  //Gestionnaires d'événements d'entrée utilisateur
   ///////////////////////////////////////////////////////////////////////
   
-  //send move when a valid piece is selected and wasd pressed
   document.onkeydown = function(event){
     if(game && game.playerList[selfId].score > 0) {
       if(selected.i != null) {
         var dx = 0;
         var dy = 0;
-        if(event.keyCode === 38) { dy = -1; } // w
-        else if(event.keyCode === 37) { dx = -1; } //a
-        else if(event.keyCode === 40) { dy = 1; }	//s
-        else if(event.keyCode === 39) { dx = 1; } //d
+        if(event.keyCode === 38) { dy = -1; } 
+        else if(event.keyCode === 37) { dx = -1; } 
+        else if(event.keyCode === 40) { dy = 1; }	
+        else if(event.keyCode === 39) { dx = 1; } 
   
         if(dx || dy) { socket.emit('move',{i:selected.i,j:selected.j,dx:dx,dy:dy}); }
       }
     }
   }
   
-  //try to select a piece on mouse click
   document.onmousedown = function(event) {
     if(game && game.playerList[selfId].score > 0) {
       var i = Math.floor((event.clientX-view.offsetX)/view.size);
@@ -179,7 +171,6 @@
     }
   }
   
-  //try to select a piece on touch of a screen
   document.addEventListener("touchstart", function(event) {
     //event.preventDefault();
     //event.stopPropagation();
@@ -193,7 +184,6 @@
     }
   }, false);
   
-  //if valid selection, send move in direction of drag on touch screen
   document.addEventListener("touchmove", function(event) {
     if(game && game.playerList[selfId].score > 0) {
       event.preventDefault();
@@ -213,7 +203,6 @@
     }
   }, false);
   
-  //remove selection when touch is released on screen
   document.addEventListener("touchend", function(event) {
     //event.preventDefault();
     //event.stopPropagation();
@@ -224,7 +213,7 @@
   
   
   ///////////////////////////////////////////////////////////////////////
-  //Menu navigation and logic
+  //Menu de navigation et logique
   ///////////////////////////////////////////////////////////////////////
   
   var word = chance.word()
@@ -243,7 +232,7 @@
     color = newColor;
   }
   
-  //menu clicks and transitions
+  //menu des cliques et transitions
   
   $("#ui").hide();
   $("#settings").hide();
